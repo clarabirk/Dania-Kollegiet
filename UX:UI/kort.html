@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="John Riddell, musiker, trommeslager, konservatorium, Aarhus, Big band, Aarhus Jazz Orchestra, Web dokumentar, informationer, kontaktoplysninger" >
+    <meta name="description" content="I denne webdokumentar får du et indblik i trommeslager og musiker John Riddells liv. Han spiller bla. sammen i Aarhus Jazz Orchestra (Big Band) og Danish Youth Jazz Orchestra.">
+    <title>Dania Kollegiet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="index" href="index.html">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+
+</head>
+
+<body>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<style>
+#map {
+position: fixed;
+width: 50%;
+}
+#features {
+width: 50%;
+margin-left: 50%;
+font-family: sans-serif;
+overflow-y: scroll;
+background-color: beige;
+}
+section {
+padding: 25px 50px;
+line-height: 40px;
+border-bottom: 2px solid #ddd;
+opacity: 0.25;
+font-size: 15px;
+background-color: burlywood;
+}
+section.active {
+opacity: 1;
+}
+section:last-child {
+border-bottom: none;
+margin-bottom: 450px;
+}
+</style>
+<form class="knap">
+<input type="button" value="Tilbage" onclick="history.go(-1)"></form>
+ 
+<div id="map"></div>
+<div id="features">
+<section id="baker" class="active">
+<h3>Aarhus</h3>
+<p>
+Her ser du Aarhus oppefra. Nedenunder kan du få et overblik over 
+hvor kollegiet ligger i forhold til henholdsvis Aarhus universitet og 
+Erhvervsakademiet i Viby. Så kan du få et overblik over hvor langt det
+ligger fra hinanden. 
+</p>
+</section>
+
+<section id="aldgate">
+<h3>Dania Kollegiet</h3>
+<p>
+Her ligger Dania Kollegiet. Det ligger et dejligt sted i Aarhus N med kort til Storcenter Nord, 
+dagligvarebutikker og Aarhus universitet. 
+</p>
+
+</section>
+<section id="london-bridge">
+<h3>Aarhus Universitet</h3>
+<p>
+Her ligger Aarhus Universitet. Det er en kort gåtur eller cykeltur fra kollegiet og 
+derfor en rigtig god mulighed for at studere på universitet imens du bor på Dania Kollegiet. 
+</p>
+
+</p>
+</section>
+<section id="woolwich">
+<h3>Erhvervsakademiet</h3>
+<p>
+Erhvervsakademiet ligger her. Der er heller ikke langt til
+Dania Kollegiet, hvis man skal studere der. 
+</section>
+
+</section>
+</div>
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2xhcmFiaXJrIiwiYSI6ImNrbjhxeDAxZzEwa2Eyd282bWx3bWpqa3YifQ.rQcU1ZFEzilWUU-rGZX7CA';
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/clarabirk/cknc7g1n118yu17mvmb295xva',
+center: [10.203921, 56.162939],
+zoom: 14,
+bearing: 27,
+pitch: 45
+});
+ 
+var chapters = {
+'baker': {
+bearing: 27,
+center: [10.203921, 56.162939],
+zoom: 10,
+pitch: 45
+},
+'aldgate': {
+duration: 6000,
+center: [10.190833, 56.170833],
+bearing: 150,
+zoom: 15,
+pitch: 0
+},
+'london-bridge': {
+duration: 6000,
+bearing: 90,
+center: [10.200972, 56.170833],
+zoom: 15,
+pitch: 0
+},
+'woolwich': {
+bearing: 90,
+center: [10.154722, 56.116944],
+zoom: 15
+},
+};
+ 
+// On every scroll event, check which element is on screen
+window.onscroll = function () {
+var chapterNames = Object.keys(chapters);
+for (var i = 0; i < chapterNames.length; i++) {
+var chapterName = chapterNames[i];
+if (isElementOnScreen(chapterName)) {
+setActiveChapter(chapterName);
+break;
+}
+}
+};
+ 
+var activeChapterName = 'baker';
+function setActiveChapter(chapterName) {
+if (chapterName === activeChapterName) return;
+ 
+map.flyTo(chapters[chapterName]);
+ 
+document.getElementById(chapterName).setAttribute('class', 'active');
+document.getElementById(activeChapterName).setAttribute('class', '');
+ 
+activeChapterName = chapterName;
+}
+ 
+function isElementOnScreen(id) {
+var element = document.getElementById(id);
+var bounds = element.getBoundingClientRect();
+return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+</script>
+
+</body>
+</html>
